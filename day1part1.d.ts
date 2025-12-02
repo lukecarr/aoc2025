@@ -8,7 +8,7 @@ type Equal<A, B> = [A] extends [B] ? ([B] extends [A] ? true : false) : false;
 // Assert will make the type compiler complain if T is not true.
 type Assert<T extends true> = T;
 
-// Digit converts a string representation of numerical digit n to a tuple of n zeroes
+// Digit converts a string representation of numerical digit n to a tuple of n zeroes.
 // This is effectively how we construct integer literals.
 type Digit = {
   '0': [];
@@ -23,7 +23,7 @@ type Digit = {
   '9': [0,0,0,0,0,0,0,0,0];
 };
 
-// C100 is a tuple of 100 zeroes, recursively constructed. 'N' prefix because type names can't be numbers.
+// N100 is a tuple of 100 zeroes, recursively constructed. 'N' prefix because type names can't be numbers.
 type N100<T extends any[] = []> = T['length'] extends 100 ? T : N100<[...T, 0]>;
 
 // Types for basic arithmetic.
