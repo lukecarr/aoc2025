@@ -21,21 +21,14 @@ steps AS (
          regexp_split_to_table(trim(lines), '\n') WITH ORDINALITY t(line)
     WHERE line <> ''
 ),
--- Convert amounts to positive/negative based on L/R
-deltas AS (
-    SELECT
-        id,
-        CASE
-            WHEN direction = 'R' THEN amount
-            ELSE -amount
-        END as change
-    FROM steps
-),
--- Sum up delts and add to starting dial position (50)
+-- Sum up steps and add to starting dial position (50)
 positions AS (
     SELECT
-        50 + sum(change) OVER (ORDER BY id) as pos
-    FROM deltas
+        50 + SUM(CASE
+            WHEN direction = 'R' THEN amount
+            ELSE -amount
+        END) OVER (ORDER BY id) as pos
+    FROM steps
 )
 -- Count number of times where the position is a multiple of 100
 SELECT
